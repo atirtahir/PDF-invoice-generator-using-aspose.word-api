@@ -21,16 +21,15 @@ namespace AsposeWordApplication
         protected void Button1_Click(object sender, EventArgs e)
         {
 
+            Document doc = new Document();
+            DocumentBuilder builder = new DocumentBuilder(doc);
+
             //path where doc will be saved
             var path = Server.MapPath("~/Files/");
 
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-            //company info
-            string header = "ASPOSE.WORDS INVOICE";
-            string companyOffile = "Cubatore 1e, Park Road";
-            string companyAddress = "Islamabad";
-
+            //pick current date time
+            var currentDate = DateTime.Today.ToString("dd-MM-yyyy");
+             
             //upload company logo
             if (Request.Files.Count > 0)
             {
@@ -57,42 +56,66 @@ namespace AsposeWordApplication
             builder.InsertBreak(BreakType.LineBreak);
             builder.InsertBreak(BreakType.LineBreak);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            builder.Writeln(header);
-            builder.Writeln(companyOffile);
-            builder.Writeln(companyAddress);
+            builder.Writeln(comname.Value);
+            builder.Writeln(compmail.Value);
+            builder.Writeln(add.Value); 
 
-
-            //pick current date time
-
-            var currentDate = DateTime.Today.ToString("dd-MM-yyyy");
+            
+             
 
             //client's information
-            builder.StartTable();
-            builder.InsertCell();
-            builder.InsertField(FieldType.FieldPage, false);
-            builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            builder.InsertBreak(BreakType.LineBreak);
+            
+            builder.ParagraphFormat.Alignment = ParagraphAlignment.Left; 
             builder.Writeln("To: Mr. " + cname.Value);
-            builder.InsertBreak(BreakType.LineBreak);
-            builder.Writeln("Product Information: " + pinfo.Value);
-            builder.InsertBreak(BreakType.LineBreak);
-            builder.Writeln("Product Price: " + price.Value);
-            builder.InsertBreak(BreakType.LineBreak);
-            builder.Writeln("Date: " + currentDate);
-            builder.EndTable();
+            builder.Writeln(mail.Value); 
+            builder.Writeln("Date: " + currentDate); 
 
             builder.InsertBreak(BreakType.ParagraphBreak);
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            builder.Writeln("Dear " + cname.Value);
+            builder.Writeln("Dear " + cname.Value+",");
+            builder.Writeln("Following are your item(s) details.");
             builder.InsertBreak(BreakType.ParagraphBreak);
-            builder.Writeln(msg.Value);
+            //item(s) description
+            builder.StartTable();
+            builder.InsertCell();
+            builder.Writeln("Item(s)");
+            builder.InsertCell();
+            builder.Writeln("Quantity");
+            builder.InsertCell();
+            builder.Writeln("Price");
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.Writeln(item1.Value);
+            builder.InsertCell();
+            builder.Writeln(qty1.Value);
+            builder.InsertCell();
+            builder.Writeln(price1.Value);
+            builder.EndRow();
+
+            builder.InsertCell();
+            builder.Writeln(item2.Value);
+            builder.InsertCell();
+            builder.Writeln(qty2.Value);
+            builder.InsertCell();
+            builder.Writeln(price2.Value);
+            builder.EndRow();
+            builder.InsertCell();
+            builder.Writeln(item3.Value);
+            builder.InsertCell();
+            builder.Writeln(qty3.Value);
+            builder.InsertCell();
+            builder.Writeln(price3.Value);
+            builder.EndRow();
+
+            builder.EndTable();
             builder.InsertBreak(BreakType.ParagraphBreak);
             builder.Writeln("Thanks");
             builder.Writeln("Project Manager");
-
-            //save doc
             doc.Save(path + "Invoice.pdf");
+            //test code
 
+            Response.Redirect("~/Files/invoice.pdf");
         }
     }
 }
