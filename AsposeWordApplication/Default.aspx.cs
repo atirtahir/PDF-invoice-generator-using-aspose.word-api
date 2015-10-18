@@ -60,9 +60,6 @@ namespace AsposeWordApplication
             builder.Writeln(compmail.Value);
             builder.Writeln(add.Value); 
 
-            
-             
-
             //client's information
             
             builder.ParagraphFormat.Alignment = ParagraphAlignment.Left; 
@@ -114,8 +111,9 @@ namespace AsposeWordApplication
             builder.Writeln("Project Manager");
             doc.Save(path + "Invoice.pdf");
             //test code
-
-            Response.Redirect("~/Files/invoice.pdf");
+            string filename = "Invoice.pdf";
+            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
+            Response.Redirect("~/Files/"+filename+"");
         }
     }
 }
