@@ -8,6 +8,7 @@ using System.Web.UI.WebControls;
 using System.IO;
 using Aspose.Words.Fields;
 using Aspose.Drawing;
+using System.Data;
 
 namespace AsposeWordApplication
 {
@@ -15,20 +16,24 @@ namespace AsposeWordApplication
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!Page.IsPostBack)
+            {
+                List<int> lst = new List<int>();
+                lst.Add(1);
+                lst.Add(2);
+                lst.Add(3);
+                ItemDetails.DataSource = lst;
+                ItemDetails.DataBind();
+            }
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
 
-            Document doc = new Document();
-            DocumentBuilder builder = new DocumentBuilder(doc);
-
-            //path where doc will be saved
-            var path = Server.MapPath("~/Files/");
-
-            //pick current date time
-            var currentDate = DateTime.Today.ToString("dd-MM-yyyy");
+            string templatePath = Server.MapPath("~/Template/");
+            //string logoPath = Server.MapPath("~/App_Data/");
+            DocumentBuilder builder = new DocumentBuilder();
+            Document doc = new Document(templatePath + "MailMerge Template.docx");
              
             //upload company logo
             if (Request.Files.Count > 0)
@@ -41,79 +46,86 @@ namespace AsposeWordApplication
                     var fileName = Path.GetFileName(file2.FileName);
                     var pathOfLogo = Path.Combine(Server.MapPath("~/App_Data/"), fileName);
                     file2.SaveAs(pathOfLogo);
-                    builder.InsertBreak(BreakType.LineBreak);
+                    string logoPath = Server.MapPath("~/App_Data/"); 
 
-                    //upload logo to the doc
-                    System.Drawing.Image image = System.Drawing.Image.FromFile(pathOfLogo);
-                    builder.MoveToDocumentStart();
-                    builder.InsertBreak(BreakType.LineBreak);
-                    builder.PageSetup.Orientation = Aspose.Words.Orientation.Portrait;
-                    builder.InsertImage(image);
+
+                    DataSet dSet = new DataSet();
+                    DataTable dTable = new DataTable("Item");
+                    //adding columns in table
+                    dTable.Columns.Add("Name");
+                    dTable.Columns.Add("Quantity");
+                    dTable.Columns.Add("Price");
+                    //looping datagridview and fetching data from each row
+                    for (int i = 0; i < ItemDetails.Rows.Count; i++)
+                    {
+                        TextBox txtName = ItemDetails.Rows[i].FindControl("txtName") as TextBox;
+                        TextBox txtPrice = ItemDetails.Rows[i].FindControl("txtPrice") as TextBox;
+                        TextBox txtItem = ItemDetails.Rows[i].FindControl("txtItem") as TextBox;
+                        //assigning fetched data from gridview to datarow
+                        DataRow dr = dTable.NewRow();
+                        dr["Name"] = txtName.Text;
+                        dr["Quantity"] = txtItem.Text;
+                        dr["Price"] = txtPrice.Text;
+                        
+                        dTable.Rows.Add(dr);
+
+                    }
+                    //binding table data to dataset
+                    dSet.Tables.Add(dTable);
+                    //merging company's information and client's information
+                    doc.MailMerge.Execute(new string[] { "CompanyName", "Email", "Address", "MyImage", "ClientName", "ClientEmail", "ClientAddress" }, 
+                        new object[] { comname.Value, compmail.Value, add.Value, File.ReadAllBytes(pathOfLogo), cname.Value, mail.Value, clientaddress.Value});
+                    //merging data to mergefield table
+                    doc.MailMerge.ExecuteWithRegions(dSet);
+
+
+                    doc.Save(templatePath + "Output.pdf");
+                    string filename = "Output.pdf";
+                    Response.Redirect("~/Template/" + filename + "");
+                }
+
+                //if user is not attaching logo
+
+                else if (file2.ContentLength <= 0)
+                {
+                   
+                    DataSet dSet = new DataSet();
+                    DataTable dTable = new DataTable("Item");
+                    //adding columns in table
+                    dTable.Columns.Add("Name");
+                    dTable.Columns.Add("Quantity");
+                    dTable.Columns.Add("Price");
+                    //looping datagridview and fetching data from each row
+                    for (int i = 0; i < ItemDetails.Rows.Count; i++)
+                    {
+                        TextBox txtName = ItemDetails.Rows[i].FindControl("txtName") as TextBox;
+                        TextBox txtPrice = ItemDetails.Rows[i].FindControl("txtPrice") as TextBox;
+                        TextBox txtItem = ItemDetails.Rows[i].FindControl("txtItem") as TextBox;
+                     
+                        DataRow dr = dTable.NewRow();
+                        //assigning fetched data from gridview to datarow
+                        dr["Name"] = txtName.Text;
+                        dr["Quantity"] = txtItem.Text;
+                        dr["Price"] = txtPrice.Text;
+                        dTable.Rows.Add(dr);
+
+                    }
+
+                    dSet.Tables.Add(dTable);
+                    //merging company's information and client's information
+                    doc.MailMerge.Execute(new string[] { "CompanyName", "Email", "Address", "ClientName", "ClientEmail", "ClientAddress" },
+                       new object[] { comname.Value, compmail.Value, add.Value, cname.Value, mail.Value, clientaddress.Value });
+                    //merging data to mergefield table
+                    doc.MailMerge.ExecuteWithRegions(dSet);
+
+                    doc.Save(templatePath + "Output.pdf");
+                    string filename = "Output.pdf"; 
+                    Response.Redirect("~/Template/" + filename + "");
                 }
             }
 
-            //show company's information
-            builder.InsertBreak(BreakType.LineBreak);
-            builder.InsertBreak(BreakType.LineBreak);
-            builder.ParagraphFormat.Alignment = ParagraphAlignment.Center;
-            builder.Writeln(comname.Value);
-            builder.Writeln(compmail.Value);
-            builder.Writeln(add.Value); 
-
-            //client's information
-            
-            builder.ParagraphFormat.Alignment = ParagraphAlignment.Left; 
-            builder.Writeln("To: Mr. " + cname.Value);
-            builder.Writeln(mail.Value); 
-            builder.Writeln("Date: " + currentDate); 
-
-            builder.InsertBreak(BreakType.ParagraphBreak);
-            builder.ParagraphFormat.Alignment = ParagraphAlignment.Left;
-            builder.Writeln("Dear " + cname.Value+",");
-            builder.Writeln("Following are your item(s) details.");
-            builder.InsertBreak(BreakType.ParagraphBreak);
-            //item(s) description
-            builder.StartTable();
-            builder.InsertCell();
-            builder.Writeln("Item(s)");
-            builder.InsertCell();
-            builder.Writeln("Quantity");
-            builder.InsertCell();
-            builder.Writeln("Price");
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.Writeln(item1.Value);
-            builder.InsertCell();
-            builder.Writeln(qty1.Value);
-            builder.InsertCell();
-            builder.Writeln(price1.Value);
-            builder.EndRow();
-
-            builder.InsertCell();
-            builder.Writeln(item2.Value);
-            builder.InsertCell();
-            builder.Writeln(qty2.Value);
-            builder.InsertCell();
-            builder.Writeln(price2.Value);
-            builder.EndRow();
-            builder.InsertCell();
-            builder.Writeln(item3.Value);
-            builder.InsertCell();
-            builder.Writeln(qty3.Value);
-            builder.InsertCell();
-            builder.Writeln(price3.Value);
-            builder.EndRow();
-
-            builder.EndTable();
-            builder.InsertBreak(BreakType.ParagraphBreak);
-            builder.Writeln("Thanks");
-            builder.Writeln("Project Manager");
-            doc.Save(path + "Invoice.pdf");
-            //test code
-            string filename = "Invoice.pdf";
-            //Response.AppendHeader("Content-Disposition", "attachment; filename=" + filename + "");
-            Response.Redirect("~/Files/"+filename+"");
         }
+
+        
     }
 }

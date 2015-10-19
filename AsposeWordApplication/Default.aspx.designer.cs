@@ -31,85 +31,22 @@ namespace AsposeWordApplication {
         protected global::System.Web.UI.HtmlControls.HtmlInputText mail;
         
         /// <summary>
-        /// item1 control.
+        /// clientaddress control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText item1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText clientaddress;
         
         /// <summary>
-        /// price1 control.
+        /// ItemDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText price1;
-        
-        /// <summary>
-        /// qty1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText qty1;
-        
-        /// <summary>
-        /// item2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText item2;
-        
-        /// <summary>
-        /// price2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText price2;
-        
-        /// <summary>
-        /// qty2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText qty2;
-        
-        /// <summary>
-        /// item3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText item3;
-        
-        /// <summary>
-        /// price3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText price3;
-        
-        /// <summary>
-        /// qty3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputText qty3;
+        protected global::System.Web.UI.WebControls.GridView ItemDetails;
         
         /// <summary>
         /// comname control.

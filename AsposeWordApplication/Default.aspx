@@ -25,9 +25,36 @@
                     <br />
                     <label>Email</label><br />
                     <input type="text" name="mail" runat="server" id="mail"  style="padding:5px" /><br />
+                     <br />
+                    <label>Address</label><br />
+                    <input type="text" name="clientaddress" runat="server" id="clientaddress"  style="padding:5px" /><br />
                     <br />
                     <p class="lead">Item Details</p>
-                    <table class="table table-bordered table-striped" id="dataTable">
+                    <asp:GridView ID="ItemDetails" runat="server" AutoGenerateColumns="false" >
+
+                        <Columns>
+
+                            <asp:TemplateField HeaderText="Name">
+                                <ItemTemplate>
+                                    <asp:TextBox runat="server" ID="txtName" ></asp:TextBox>
+                                </ItemTemplate>
+
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Item">
+                                <ItemTemplate>
+                                    <asp:TextBox runat="server" ID="txtItem" ></asp:TextBox>
+                                </ItemTemplate>
+
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="Price">
+                                <ItemTemplate>
+                                    <asp:TextBox runat="server" ID="txtPrice" ></asp:TextBox>
+                                </ItemTemplate>
+
+                            </asp:TemplateField>
+                        </Columns>
+                    </asp:GridView>
+                   <%-- <table class="table table-bordered table-striped" id="dataTable">
                        
                         <tr> 
                             <td><input type="text" runat="server" id="item1" placeholder="Item 1" name="item1" style="padding:5px" /></td>
@@ -44,7 +71,7 @@
                             <td><input type="text" runat="server" placeholder="Price" id="price3" name="price3"  style="padding:5px" /></td>
                             <td><input type="text" runat="server" placeholder="Quantity" id="qty3" name="qty3"  style="padding:5px" /></td>
                         </tr>
-                    </table>
+                    </table>--%>
                    <%-- <label>Product Name</label><br />
                     <input type="text" name="pinfo" runat="server" id="pinfo" /><br />
                     <br />
