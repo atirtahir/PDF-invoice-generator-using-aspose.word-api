@@ -30,7 +30,7 @@ namespace AsposeWordApplication
         protected void Button1_Click(object sender, EventArgs e)
         {
 
-            string templatePath = Server.MapPath("~/Template/");
+            string templatePath = Server.MapPath("~/Files/");
             //string logoPath = Server.MapPath("~/App_Data/");
             DocumentBuilder builder = new DocumentBuilder();
             Document doc = new Document(templatePath + "MailMerge Template.docx");
@@ -81,7 +81,7 @@ namespace AsposeWordApplication
 
                     doc.Save(templatePath + "Output.pdf");
                     string filename = "Output.pdf";
-                    Response.Redirect("~/Template/" + filename + "");
+                    Response.Redirect("~/Files/" + filename + "");
                 }
 
                 //if user is not attaching logo
@@ -120,7 +120,7 @@ namespace AsposeWordApplication
 
                     doc.Save(templatePath + "Output.pdf");
                     string filename = "Output.pdf"; 
-                    Response.Redirect("~/Template/" + filename + "");
+                    Response.Redirect("~/Files/" + filename + "");
                 }
             }
 
