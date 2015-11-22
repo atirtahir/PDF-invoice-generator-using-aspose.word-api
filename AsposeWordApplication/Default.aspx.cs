@@ -12,11 +12,15 @@ using System.Data;
 
 namespace AsposeWordApplication
 {
+
     public partial class _Default : Page
     {
+
+      
+        
         protected void Page_Load(object sender, EventArgs e)
-        {
-            //Webforms
+        { 
+        //ExStart:LoadPage
             if (!Page.IsPostBack)
             {
                 List<int> lst = new List<int>();
@@ -26,7 +30,9 @@ namespace AsposeWordApplication
                 ItemDetails.DataSource = lst;
                 ItemDetails.DataBind();
             }
+            //ExEnd:LoadPage
         }
+        
 
         protected void Button1_Click(object sender, EventArgs e)
         {
