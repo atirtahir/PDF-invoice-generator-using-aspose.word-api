@@ -9,9 +9,11 @@ namespace AsposeWordApplication
 {
     public partial class Contact : Page
     {
+        //ExStart:Page_Load
         protected void Page_Load(object sender, EventArgs e)
         {
 
         }
+        //ExEnd:Page_Load
     }
 }
